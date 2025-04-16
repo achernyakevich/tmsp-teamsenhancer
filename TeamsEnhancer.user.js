@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Teams Enhancer
 // @namespace    https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/
-// @version      0.1.0
+// @version      0.2.0
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
@@ -12,7 +12,7 @@
 (function () {
     'use strict';
 
-    const LOG_DEBUG = true;
+    const LOG_DEBUG = false;
     const SHOW_NOTIFICATION = false;
     const UNREAD_STATUS = "unread";
     const TEAMS_FAVICON = "https://statics.teams.cdn.live.net/evergreen-assets/icons/microsoft_teams_logo_refresh.ico";
@@ -58,6 +58,44 @@
         }
     }
 
+    function selectSidebarItem(itemCode) {
+        switch (itemCode) {
+            case 'Digit1':
+                document.querySelector('button[aria-label="Chat"]').click();
+                break;
+            case 'Digit2':
+                document.querySelector('button[aria-label="Meet"]').click();
+                break;
+            case 'Digit3':
+                document.querySelector('button[aria-label="Communities"]').click();
+                break;
+            case 'Digit4':
+                document.querySelector('button[aria-label="Calendar"]').click();
+                break;
+            case 'Digit5':
+                document.querySelector('button[aria-label="Activity"]').click();
+                break;
+            default:
+                log("Unsupported sidebar item: " + itemCode);
+        }
+    }
+
     setInterval(checkUnreadBlocks, checkTimeout);
-    GM_log("Teams Enhancer started (checking interval: " + checkTimeout + "ms).");
+    log("Teams Enhancer: started (checking interval: " + checkTimeout + "ms).");
+
+    document.addEventListener('keydown', function(event) {
+        //log("Ctrl: " + event.ctrlKey + "; Alt: " + event.altKey + "; Shift: " + event.shiftKey +
+        //    "; Key: " + event.key + "; Code: " + event.code);
+        // Ctrl+Shift+<Num> -> Select Sidebar Item (1-5)
+        if ( event.ctrlKey && event.altKey &&
+             ( event.code == 'Digit1' || event.code == 'Digit2' || event.code == 'Digit3' ||
+               event.code == 'Digit4' || event.code == 'Digit5' ) ) {
+            selectSidebarItem(event.code);
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+    }, true);
+    log("Teams Enhancer: shortcuts assigned.");
+
 })();

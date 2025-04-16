@@ -14,6 +14,17 @@ To install script click the following link -
 Teams UI scanned every 30s and of unread chats/activities detected then
 browser's tab icon updated to show it by red spot.
 
+
+### Shortcuts
+
+* Switching sidebar elements:
+  * `Ctrl+Alt+1` - `Chat`
+  * `Ctrl+Alt+2` - `Meet`
+  * `Ctrl+Alt+3` - `Communities`
+  * `Ctrl+Alt+4` - `Calendar`
+  * `Ctrl+Alt+5` - `Activity`
+
+
 ### Other
 
 See more in detailed [Release Notes](./ReleaseNotes.md).
