@@ -15,6 +15,12 @@ Teams UI scanned every 30s and of unread chats/activities detected then
 browser's tab icon updated to show it by red spot.
 
 
+### Adjusting chat text font size
+
+User can adjust chat text font size (1-5) by Tampermonkey script menu. `1` is
+smallest, `5` is biggest.
+
+
 ### Shortcuts
 
 * Switching sidebar elements:

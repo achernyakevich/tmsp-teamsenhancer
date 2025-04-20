@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Teams Enhancer
 // @namespace    https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/
-// @version      0.2.0
+// @version      0.3.0
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
 // @grant        GM_notification
+// @grant        GM_registerMenuCommand
 // @grant        GM_log
 // ==/UserScript==
 
@@ -13,6 +14,7 @@
     'use strict';
 
     const LOG_DEBUG = false;
+    const CHAT_TEXT_SIZE = 3;
     const SHOW_NOTIFICATION = false;
     const UNREAD_STATUS = "unread";
     const TEAMS_FAVICON = "https://statics.teams.cdn.live.net/evergreen-assets/icons/microsoft_teams_logo_refresh.ico";
@@ -25,6 +27,31 @@
             GM_log(logStr);
         }
     }
+
+    function adjustChatTextSize(size) {
+        if (size >= 1 && size <= 5) {
+            let style = document.getElementById("chatTextSizeStyle");
+            if (!style) {
+                style = document.createElement('style');
+                style.id = "chatTextSizeStyle";
+                document.head.appendChild(style);
+            }
+            style.innerHTML = `.fkhj508 { font-size: var(--fontSizeBase${size}00) !important; }`;
+        }
+    }
+
+    function promptAndAdjustChatTextSize() {
+        const size = prompt("Enter chat text font size (1-5):");
+        const sizeNumber = parseInt(size, 10);
+        if (!isNaN(sizeNumber) && sizeNumber >= 1 && sizeNumber <= 5) {
+            adjustChatTextSize(sizeNumber);
+        } else {
+            alert("Invalid input. Please enter a number between 1 and 5.");
+        }
+    }
+
+    GM_registerMenuCommand("Adjust Chat Text Font Size", promptAndAdjustChatTextSize, "a");
+    adjustChatTextSize(CHAT_TEXT_SIZE);
 
     function showNotification() {
         log("Unread found.");
