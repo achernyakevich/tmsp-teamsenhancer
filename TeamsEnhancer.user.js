@@ -23,7 +23,7 @@
     let checkTimeout = 30000;
 
     function log(logStr) {
-        if ( LOG_DEBUG ) {
+        if (LOG_DEBUG) {
             GM_log(logStr);
         }
     }
@@ -58,15 +58,15 @@
         GM_notification({
             title: "Teams Warning",
             text: "You have unread messages or activities in Teams for account of " +
-                  document.getElementsByClassName("fui-Avatar")[0].ariaLabel.substring(19),
+                document.getElementsByClassName("fui-Avatar")[0].ariaLabel.substring(19),
             timeout: checkTimeout,
             image: TEAMS_FAVICON,
-            onclick: function () {}
+            onclick: function () { }
         });
     }
 
     function changeFavicon(status) {
-        if ( status == UNREAD_STATUS ) {
+        if (status == UNREAD_STATUS) {
             document.getElementById("teams-favicon").href = TEAMS_FAVICON_UNREAD;
         } else {
             document.getElementById("teams-favicon").href = TEAMS_FAVICON;
@@ -75,8 +75,8 @@
 
     function checkUnreadBlocks() {
         log("Checking...");
-        if ( document.getElementsByClassName("fui-CounterBadge").length > 0 ) {
-            if ( SHOW_NOTIFICATION ) {
+        if (document.getElementsByClassName("fui-CounterBadge").length > 0) {
+            if (SHOW_NOTIFICATION) {
                 showNotification();
             }
             changeFavicon(UNREAD_STATUS);
@@ -110,13 +110,13 @@
     setInterval(checkUnreadBlocks, checkTimeout);
     log("Teams Enhancer: started (checking interval: " + checkTimeout + "ms).");
 
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
         //log("Ctrl: " + event.ctrlKey + "; Alt: " + event.altKey + "; Shift: " + event.shiftKey +
         //    "; Key: " + event.key + "; Code: " + event.code);
         // Ctrl+Shift+<Num> -> Select Sidebar Item (1-5)
-        if ( event.ctrlKey && event.altKey &&
-             ( event.code == 'Digit1' || event.code == 'Digit2' || event.code == 'Digit3' ||
-               event.code == 'Digit4' || event.code == 'Digit5' ) ) {
+        if (event.ctrlKey && event.altKey &&
+            (event.code == 'Digit1' || event.code == 'Digit2' || event.code == 'Digit3' ||
+                event.code == 'Digit4' || event.code == 'Digit5')) {
             selectSidebarItem(event.code);
             event.stopPropagation();
             event.preventDefault();
