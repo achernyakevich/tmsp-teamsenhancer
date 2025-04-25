@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Teams Enhancer
 // @namespace    https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/
-// @version      0.3.0
+// @version      0.3.1
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
@@ -36,7 +36,7 @@
                 style.id = "chatTextSizeStyle";
                 document.head.appendChild(style);
             }
-            style.innerHTML = `.fkhj508 { font-size: var(--fontSizeBase${size}00) !important; }`;
+            style.innerHTML = `.fui-ChatMyMessage__body, .fui-ChatMessage__body { font-size: var(--fontSizeBase${size}00) !important; }`;
         }
     }
 
@@ -114,7 +114,7 @@
         //log("Ctrl: " + event.ctrlKey + "; Alt: " + event.altKey + "; Shift: " + event.shiftKey +
         //    "; Key: " + event.key + "; Code: " + event.code);
         // Ctrl+Shift+<Num> -> Select Sidebar Item (1-5)
-        if (event.ctrlKey && event.altKey &&
+        if (event.ctrlKey && (event.altKey || event.shiftKey) &&
             (event.code == 'Digit1' || event.code == 'Digit2' || event.code == 'Digit3' ||
                 event.code == 'Digit4' || event.code == 'Digit5')) {
             selectSidebarItem(event.code);

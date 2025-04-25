@@ -1,5 +1,14 @@
 # Release Notes
 
+## v. 0.3.1
+
+### Enhancement
+
+* Possibility to adjust chat text font size - more explicit CSS selector.
+* Switching sidebar elements - added support of `Ctrl+Shift+<Num_1-5>` (prevent
+shortcut conflicts on Linux with KDE).
+
+
 ## v. 0.3.0
 
 ### Enhancement

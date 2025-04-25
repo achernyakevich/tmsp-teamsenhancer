@@ -24,11 +24,11 @@ smallest, `5` is biggest.
 ### Shortcuts
 
 * Switching sidebar elements:
-  * `Ctrl+Alt+1` - `Chat`
-  * `Ctrl+Alt+2` - `Meet`
-  * `Ctrl+Alt+3` - `Communities`
-  * `Ctrl+Alt+4` - `Calendar`
-  * `Ctrl+Alt+5` - `Activity`
+  * `Ctrl+Alt+1` or `Ctrl+Shift+1` - `Chat`
+  * `Ctrl+Alt+2` or `Ctrl+Shift+2` - `Meet`
+  * `Ctrl+Alt+3` or `Ctrl+Shift+3` - `Communities`
+  * `Ctrl+Alt+4` or `Ctrl+Shift+4` - `Calendar`
+  * `Ctrl+Alt+5` or `Ctrl+Shift+5` - `Activity`
 
 
 ### Other
