@@ -4,7 +4,8 @@
 
 ### Enhancements
 
-TBD
+* Added possibility to adjust side panel size (between 250px and 500px) in
+Tampermonkey script menu.
 
 ### Fixes
 

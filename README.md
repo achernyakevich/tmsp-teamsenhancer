@@ -20,6 +20,10 @@ browser's tab icon updated to show it by red spot.
 User can adjust chat text font size (1-5) by Tampermonkey script menu. `1` is
 smallest, `5` is biggest.
 
+### Adjusting side panel size
+
+User can adjust side panel size (250px-500px) by Tampermonkey script menu.
+
 
 ### Shortcuts
 

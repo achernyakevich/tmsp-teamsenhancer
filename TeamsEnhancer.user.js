@@ -15,6 +15,7 @@
 
     const LOG_DEBUG = false;
     const CHAT_TEXT_SIZE = 3;
+    const SIDE_PANEL_SIZE = 350;
     const SHOW_NOTIFICATION = false;
     const UNREAD_STATUS = "unread";
     const TEAMS_FAVICON = "https://statics.teams.cdn.live.net/evergreen-assets/icons/microsoft_teams_logo_refresh.ico";
@@ -50,8 +51,27 @@
         }
     }
 
-    GM_registerMenuCommand("Adjust Chat Text Font Size", promptAndAdjustChatTextSize, "a");
+    GM_registerMenuCommand("Adjust Chat Text Font Size", promptAndAdjustChatTextSize, "t");
     adjustChatTextSize(CHAT_TEXT_SIZE);
+
+    function adjustSidePanelSize(size) {
+        if (size >= 250 && size <= 500) {
+            document.querySelectorAll('[data-tid="app-layout-area--sub-nav"]')[0]?.style.setProperty("--slot-width", `${size}px`);
+        }
+    }
+
+    function promptAndAdjustSidePanelSize() {
+        const size = prompt("Enter side panel size (250-500):");
+        const sizeNumber = parseInt(size, 10);
+        if (!isNaN(sizeNumber) && sizeNumber >= 250 && sizeNumber <= 500) {
+            adjustSidePanelSize(sizeNumber);
+        } else {
+            alert("Invalid input. Please enter a number between 250 and 500.");
+        }
+    }
+
+    GM_registerMenuCommand("Adjust side Panel Size", promptAndAdjustSidePanelSize, "s");
+    adjustSidePanelSize(SIDE_PANEL_SIZE);
 
     function showNotification() {
         log("Unread found.");
