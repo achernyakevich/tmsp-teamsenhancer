@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Teams Enhancer
 // @namespace    https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/
-// @version      0.3.1
+// @version      0.4.0
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
