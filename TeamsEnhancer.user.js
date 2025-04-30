@@ -36,7 +36,7 @@
                 style.id = "chatTextSizeStyle";
                 document.head.appendChild(style);
             }
-            style.innerHTML = `.fui-ChatMyMessage__body, .fui-ChatMessage__body { font-size: var(--fontSizeBase${size}00) !important; }`;
+            style.textContent = `.fui-ChatMyMessage__body, .fui-ChatMessage__body { font-size: var(--fontSizeBase${size}00) !important; }`;
         }
     }
 
