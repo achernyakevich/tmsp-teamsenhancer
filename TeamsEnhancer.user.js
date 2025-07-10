@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Teams Enhancer
 // @namespace    https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/
-// @version      0.4.0
+// @version      0.4.1
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
+// @match        https://teams.microsoft.com/v2*
 // @grant        GM_notification
 // @grant        GM_registerMenuCommand
 // @grant        GM_log
@@ -51,9 +52,6 @@
         }
     }
 
-    GM_registerMenuCommand("Adjust Chat Text Font Size", promptAndAdjustChatTextSize, "t");
-    adjustChatTextSize(CHAT_TEXT_SIZE);
-
     function adjustSidePanelSize(size) {
         if (size >= 250 && size <= 500) {
             document.querySelectorAll('[data-tid="app-layout-area--sub-nav"]')[0]?.style.setProperty("--slot-width", `${size}px`);
@@ -69,9 +67,6 @@
             alert("Invalid input. Please enter a number between 250 and 500.");
         }
     }
-
-    GM_registerMenuCommand("Adjust side Panel Size", promptAndAdjustSidePanelSize, "s");
-    adjustSidePanelSize(SIDE_PANEL_SIZE);
 
     function showNotification() {
         log("Unread found.");
@@ -145,4 +140,11 @@
     }, true);
     log("Teams Enhancer: shortcuts assigned.");
 
+    setTimeout(function () {
+        GM_registerMenuCommand("Adjust Chat Text Font Size", promptAndAdjustChatTextSize, "t");
+        adjustChatTextSize(CHAT_TEXT_SIZE);
+        GM_registerMenuCommand("Adjust side Panel Size", promptAndAdjustSidePanelSize, "s");
+        adjustSidePanelSize(SIDE_PANEL_SIZE);
+    }, 1000);
+    log("Teams Enhancer: menu commands registered, UI adjustments applied.");
 })();

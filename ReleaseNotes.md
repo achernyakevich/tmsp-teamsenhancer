@@ -1,5 +1,16 @@
 # Release Notes
 
+## v. 0.4.1
+
+### Enhancements
+
+* Improved stability of script initialization (adjusting UI, menu commands registration).
+
+### Fixes
+
+* Added support https://teams.microsoft.com/v2/ URLs.
+
+
 ## v. 0.4.0
 
 ### Enhancements
