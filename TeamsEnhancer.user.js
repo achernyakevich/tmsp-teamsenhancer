@@ -3,7 +3,7 @@
 // @namespace    https://github.com/achernyakevich/tmsp-teamsenhancer/
 // @updateURL    https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js
 // @downloadURL  https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js
-// @version      0.5.0
+// @version      0.5-SNAPSHOT
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
@@ -40,7 +40,10 @@
                 style.id = "chatTextSizeStyle";
                 document.head.appendChild(style);
             }
-            style.textContent = `.fui-ChatMyMessage__body, .fui-ChatMessage__body { font-size: var(--fontSizeBase${size}00) !important; }`;
+            style.textContent = `
+              .fui-ChatMyMessage__body, .fui-ChatMessage__body { font-size: var(--fontSizeBase${size}00) !important; }
+              .fkhj508>div.fui-Primitive { font-size: var(--fontSizeBase${size}00); }
+            `;
         }
     }
 

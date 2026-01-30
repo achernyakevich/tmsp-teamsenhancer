@@ -1,5 +1,13 @@
 # Release Notes
 
+## v. 0.5-SNAPSHOT
+
+### Fixes
+
+* Fixed possibility to adjust chat text font size in case Chat density is set
+to Compact.
+
+
 ## v. 0.5.0
 
 ### General
