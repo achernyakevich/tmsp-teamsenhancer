@@ -1,5 +1,13 @@
 # Release Notes
 
+## v. 0.5.0
+
+### General
+
+* Migrated from Bitbucket (https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/)
+to GitHub (https://github.com/achernyakevich/tmsp-teamsenhancer).
+
+
 ## v. 0.4.1
 
 ### Enhancements

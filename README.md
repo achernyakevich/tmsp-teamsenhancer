@@ -4,7 +4,7 @@ The `TeamsEnhancer.user.js` designed to bring additional functionality and UI
 enhancements to [Teams](https://teams.live.com/).
 
 To install script click the following link -
-[GmailEnhancer.user.js](https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/raw/main/TeamsEnhancer.user.js).
+[GmailEnhancer.user.js](https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js).
 
 
 ## Features
@@ -46,5 +46,5 @@ If you would like to contribute - create a pull request.
 
 If you have found a bug or need some features or would like to propose some
 features - create an issue. But we will appreciate if you will first check
-the list of [already existed issues](https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/issues)
+the list of [already existed issues](https://github.com/achernyakevich/tmsp-teamsenhancer/issues)
 to prevent creation of duplicates.

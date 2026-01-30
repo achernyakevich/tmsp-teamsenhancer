@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name         Teams Enhancer
-// @namespace    https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/
-// @version      0.4.1
+// @namespace    https://github.com/achernyakevich/tmsp-teamsenhancer/
+// @updateURL    https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js
+// @downloadURL  https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js
+// @version      0.5.0
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
@@ -20,7 +22,7 @@
     const SHOW_NOTIFICATION = false;
     const UNREAD_STATUS = "unread";
     const TEAMS_FAVICON = "https://statics.teams.cdn.live.net/evergreen-assets/icons/microsoft_teams_logo_refresh.ico";
-    const TEAMS_FAVICON_UNREAD = "https://bitbucket.org/achernyakevich/tmsp-teamsenhancer/raw/main/images/microsoft_teams_logo_unread.ico";
+    const TEAMS_FAVICON_UNREAD = "https://raw.githubusercontent.com/achernyakevich/tmsp-teamsenhancer/refs/heads/main/images/microsoft_teams_logo_unread.ico";
 
     let checkTimeout = 30000;
 
