@@ -3,31 +3,49 @@
 // @namespace    https://github.com/achernyakevich/tmsp-teamsenhancer/
 // @updateURL    https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js
 // @downloadURL  https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js
-// @version      0.5-SNAPSHOT
+// @version      0.6-SNAPSHOT
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
 // @match        https://teams.microsoft.com/v2*
 // @grant        GM_notification
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_deleteValue
+// @grant        GM_listValues
 // @grant        GM_registerMenuCommand
 // @grant        GM_log
+// @require      https://bitbucket.org/achernyakevich/tmsp-common/raw/configHelper-0.1.3/configHelper.js
 // ==/UserScript==
 
 (function () {
     'use strict';
 
-    const LOG_DEBUG = false;
-    const CHAT_TEXT_SIZE = 3;
-    const SIDE_PANEL_SIZE = 350;
-    const SHOW_NOTIFICATION = false;
     const UNREAD_STATUS = "unread";
     const TEAMS_FAVICON = "https://statics.teams.cdn.live.net/evergreen-assets/icons/microsoft_teams_logo_refresh.ico";
     const TEAMS_FAVICON_UNREAD = "https://raw.githubusercontent.com/achernyakevich/tmsp-teamsenhancer/refs/heads/main/images/microsoft_teams_logo_unread.ico";
 
-    let checkTimeout = 30000;
+    const CONFIG_NAMESPACE = "teams-enhancer";
+    const DEFAULT_CONFIG = {
+        "ui": {
+            "startupDelay": 30000,
+            "chatTextSize": 3,
+            "sidePanelSize": 350
+        },
+        "notification": {
+            "checkTimeout": 30000,
+            "showNotification": false
+        },
+        "debug": false,
+    }
+    const config = (
+        configHelper.getConfigString(CONFIG_NAMESPACE)
+            ? configHelper.getConfig(CONFIG_NAMESPACE)
+            : DEFAULT_CONFIG
+    );
 
     function log(logStr) {
-        if (LOG_DEBUG) {
+        if (config.debug) {
             GM_log(logStr);
         }
     }
@@ -79,7 +97,7 @@
             title: "Teams Warning",
             text: "You have unread messages or activities in Teams for account of " +
                 document.getElementsByClassName("fui-Avatar")[0].ariaLabel.substring(19),
-            timeout: checkTimeout,
+            timeout: config.notification.checkTimeout,
             image: TEAMS_FAVICON,
             onclick: function () { }
         });
@@ -96,7 +114,7 @@
     function checkUnreadBlocks() {
         log("Checking...");
         if (document.getElementsByClassName("fui-CounterBadge").length > 0) {
-            if (SHOW_NOTIFICATION) {
+            if (config.notification.showNotification) {
                 showNotification();
             }
             changeFavicon(UNREAD_STATUS);
@@ -127,8 +145,8 @@
         }
     }
 
-    setInterval(checkUnreadBlocks, checkTimeout);
-    log("Teams Enhancer: started (checking interval: " + checkTimeout + "ms).");
+    setInterval(checkUnreadBlocks, config.notification.checkTimeout);
+    log("Teams Enhancer: started (checking interval: " + config.notification.checkTimeout + "ms).");
 
     document.addEventListener('keydown', function (event) {
         //log("Ctrl: " + event.ctrlKey + "; Alt: " + event.altKey + "; Shift: " + event.shiftKey +
@@ -147,9 +165,12 @@
 
     setTimeout(function () {
         GM_registerMenuCommand("Adjust Chat Text Font Size", promptAndAdjustChatTextSize, "t");
-        adjustChatTextSize(CHAT_TEXT_SIZE);
+        adjustChatTextSize(config.ui.chatTextSize);
         GM_registerMenuCommand("Adjust side Panel Size", promptAndAdjustSidePanelSize, "s");
-        adjustSidePanelSize(SIDE_PANEL_SIZE);
-    }, 1000);
-    log("Teams Enhancer: menu commands registered, UI adjustments applied.");
+        adjustSidePanelSize(config.ui.sidePanelSize);
+
+        configHelper.addConfigMenu(CONFIG_NAMESPACE, JSON.stringify(DEFAULT_CONFIG));
+
+        log("Teams Enhancer: menu commands registered, UI adjustments applied.");
+    }, config.ui.startupDelay);
 })();

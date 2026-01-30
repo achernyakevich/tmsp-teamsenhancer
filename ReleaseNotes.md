@@ -1,6 +1,10 @@
 # Release Notes
 
-## v. 0.5-SNAPSHOT
+## v. 0.6-SNAPSHOT
+
+### Enhancements
+
+* Introduced configuration management and persisting.
 
 ### Fixes
 
