@@ -16,7 +16,7 @@ and if unread chats/activities detected then browser's tab icon updated to
 show it by red spot.
 
 Additionally, if `notification.showNotification` configured to `true` then
-system notification aller is activated.
+system notification alert is activated.
 
 ### Adjusting chat text font size
 
