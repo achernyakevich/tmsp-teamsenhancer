@@ -5,6 +5,7 @@
 ### Enhancements
 
 * Introduced configuration management and persisting.
+* Menu item to hide/show Invite to Teams button in Chat panel.
 
 ### Fixes
 

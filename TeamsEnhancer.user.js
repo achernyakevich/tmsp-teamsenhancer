@@ -30,7 +30,8 @@
         "ui": {
             "startupDelay": 30000,
             "chatTextSize": 3,
-            "sidePanelSize": 350
+            "sidePanelSize": 350,
+            "inviteToTeamsVisibility": false
         },
         "notification": {
             "checkTimeout": 30000,
@@ -88,6 +89,19 @@
             adjustSidePanelSize(sizeNumber);
         } else {
             alert("Invalid input. Please enter a number between 250 and 500.");
+        }
+    }
+
+    function toggleInviteToTeamsButton() {
+        const styleId = "inviteToTeamsVisibilityStyle";
+        let style = document.getElementById(styleId);
+        if (!style) {
+            style = document.createElement('style');
+            style.id = styleId;
+            document.head.appendChild(style);
+            style.textContent = 'div[data-tid="chat-list-layout"]>button.fui-Button {display: none}';
+        } else {
+            style.remove();
         }
     }
 
@@ -168,6 +182,10 @@
         adjustChatTextSize(config.ui.chatTextSize);
         GM_registerMenuCommand("Adjust side Panel Size", promptAndAdjustSidePanelSize, "s");
         adjustSidePanelSize(config.ui.sidePanelSize);
+        GM_registerMenuCommand("Toggle Invite to Teams button", toggleInviteToTeamsButton, "i");
+        if (!config.ui.inviteToTeamsVisibility) {
+            toggleInviteToTeamsButton();
+        }
 
         configHelper.addConfigMenu(CONFIG_NAMESPACE, JSON.stringify(DEFAULT_CONFIG));
 

@@ -47,6 +47,10 @@ The script configuration could be changed by calling `Update Config`,
 
 ### Other
 
+#### Minor features
+
+* Menu item to hide/show Invite to Teams button in Chat panel.
+
 See more in detailed [Release Notes](./ReleaseNotes.md).
 
 
