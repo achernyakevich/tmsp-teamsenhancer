@@ -4,7 +4,7 @@ The `TeamsEnhancer.user.js` designed to bring additional functionality and UI
 enhancements to [Teams](https://teams.live.com/).
 
 To install script click the following link -
-[GmailEnhancer.user.js](https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js).
+[TeamsEnhancer.user.js](https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js).
 
 
 ## Features
