@@ -8,6 +8,7 @@
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
 // @match        https://teams.microsoft.com/v2*
+// @match        https://teams.cloud.microsoft/*
 // @grant        GM_notification
 // @grant        GM_setValue
 // @grant        GM_getValue

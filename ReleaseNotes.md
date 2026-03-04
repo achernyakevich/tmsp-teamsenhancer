@@ -6,6 +6,7 @@
 
 * Introduced configuration management and persisting.
 * Menu item to hide/show Invite to Teams button in Chat panel.
+* Added support of web version on https://teams.cloud.microsoft/.
 
 ### Fixes
 
