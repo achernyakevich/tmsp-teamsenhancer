@@ -138,25 +138,23 @@
         }
     }
 
-    function selectSidebarItem(itemCode) {
-        switch (itemCode) {
-            case 'Digit1':
-                document.querySelector('button[aria-label="Chat"]').click();
-                break;
-            case 'Digit2':
-                document.querySelector('button[aria-label="Meet"]').click();
-                break;
-            case 'Digit3':
-                document.querySelector('button[aria-label="Communities"]').click();
-                break;
-            case 'Digit4':
-                document.querySelector('button[aria-label="Calendar"]').click();
-                break;
-            case 'Digit5':
-                document.querySelector('button[aria-label="Activity"]').click();
-                break;
-            default:
-                log("Unsupported sidebar item: " + itemCode);
+    function startMeetNowCall(isVideoCall) {
+        let callButton = null;
+        let meetNowDropDownButton = document.querySelectorAll('[data-tid="audio-drop-in-more-options-button"]')[0];
+        if (meetNowDropDownButton) {
+            meetNowDropDownButton.click();
+            callButton = document.querySelectorAll(
+                '[data-tid="audio-drop-in-dropdown-menu-item-' + (isVideoCall ? "video" : "audio") + '-button"]'
+            )[0];
+        } else {
+            callButton = document.querySelectorAll(
+                '[data-tid="chat-call-' + (isVideoCall ? "video" : "audio") + '-button"]'
+            )[0];
+        }
+        if (callButton) {
+            callButton.click();
+        } else {
+            GM_log("No Call Button Found.");
         }
     }
 
@@ -167,10 +165,8 @@
         //log("Ctrl: " + event.ctrlKey + "; Alt: " + event.altKey + "; Shift: " + event.shiftKey +
         //    "; Key: " + event.key + "; Code: " + event.code);
         // Ctrl+Shift+<Num> -> Select Sidebar Item (1-5)
-        if (event.ctrlKey && (event.altKey || event.shiftKey) &&
-            (event.code == 'Digit1' || event.code == 'Digit2' || event.code == 'Digit3' ||
-                event.code == 'Digit4' || event.code == 'Digit5')) {
-            selectSidebarItem(event.code);
+        if (event.altKey && event.ctrlKey && event.shiftKey && (event.code == 'KeyA' || event.code == 'KeyV')) {
+            startMeetNowCall(event.code == 'KeyV');
             event.stopPropagation();
             event.preventDefault();
         }

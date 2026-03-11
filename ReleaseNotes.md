@@ -7,11 +7,19 @@
 * Introduced configuration management and persisting.
 * Menu item to hide/show Invite to Teams button in Chat panel.
 * Added support of web version on https://teams.cloud.microsoft/.
+* Added support for shortcuts `Ctrl+Alt+Shift+A` and `Ctrl+Alt+Shift+V` - Audio
+and Video call for both direct and group chats.
 
 ### Fixes
 
 * Fixed possibility to adjust chat text font size in case Chat density is set
 to Compact.
+
+### Removed
+
+* Removed support for shortcuts `Ctrl+Alt+<Num_1-5>` (switching between sidebar
+elements `Chat`, `Meet`, `Communities`, `Calendar`, `Activity`) in favor of
+standard `Ctrl+Shift<Num_1-6>` added in the last version.
 
 
 ## v. 0.5.0
