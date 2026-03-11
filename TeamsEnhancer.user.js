@@ -3,31 +3,51 @@
 // @namespace    https://github.com/achernyakevich/tmsp-teamsenhancer/
 // @updateURL    https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js
 // @downloadURL  https://github.com/achernyakevich/tmsp-teamsenhancer/raw/refs/heads/main/TeamsEnhancer.user.js
-// @version      0.5.0
+// @version      0.6-SNAPSHOT
 // @description  Microsoft Teams (web version) enhancer. It helps to handle unread messages, etc.
 // @author       Alexander Chernyakevich
 // @match        https://teams.live.com/v2*
 // @match        https://teams.microsoft.com/v2*
+// @match        https://teams.cloud.microsoft/*
 // @grant        GM_notification
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_deleteValue
+// @grant        GM_listValues
 // @grant        GM_registerMenuCommand
 // @grant        GM_log
+// @require      https://bitbucket.org/achernyakevich/tmsp-common/raw/configHelper-0.1.3/configHelper.js
 // ==/UserScript==
 
 (function () {
     'use strict';
 
-    const LOG_DEBUG = false;
-    const CHAT_TEXT_SIZE = 3;
-    const SIDE_PANEL_SIZE = 350;
-    const SHOW_NOTIFICATION = false;
     const UNREAD_STATUS = "unread";
     const TEAMS_FAVICON = "https://statics.teams.cdn.live.net/evergreen-assets/icons/microsoft_teams_logo_refresh.ico";
     const TEAMS_FAVICON_UNREAD = "https://raw.githubusercontent.com/achernyakevich/tmsp-teamsenhancer/refs/heads/main/images/microsoft_teams_logo_unread.ico";
 
-    let checkTimeout = 30000;
+    const CONFIG_NAMESPACE = "teams-enhancer";
+    const DEFAULT_CONFIG = {
+        "ui": {
+            "startupDelay": 30000,
+            "chatTextSize": 3,
+            "sidePanelSize": 350,
+            "inviteToTeamsVisibility": false
+        },
+        "notification": {
+            "checkTimeout": 30000,
+            "showNotification": false
+        },
+        "debug": false,
+    }
+    const config = (
+        configHelper.getConfigString(CONFIG_NAMESPACE)
+            ? configHelper.getConfig(CONFIG_NAMESPACE)
+            : DEFAULT_CONFIG
+    );
 
     function log(logStr) {
-        if (LOG_DEBUG) {
+        if (config.debug) {
             GM_log(logStr);
         }
     }
@@ -40,7 +60,10 @@
                 style.id = "chatTextSizeStyle";
                 document.head.appendChild(style);
             }
-            style.textContent = `.fui-ChatMyMessage__body, .fui-ChatMessage__body { font-size: var(--fontSizeBase${size}00) !important; }`;
+            style.textContent = `
+              .fui-ChatMyMessage__body, .fui-ChatMessage__body { font-size: var(--fontSizeBase${size}00) !important; }
+              .fkhj508>div.fui-Primitive { font-size: var(--fontSizeBase${size}00); }
+            `;
         }
     }
 
@@ -70,13 +93,26 @@
         }
     }
 
+    function toggleInviteToTeamsButton() {
+        const styleId = "inviteToTeamsVisibilityStyle";
+        let style = document.getElementById(styleId);
+        if (!style) {
+            style = document.createElement('style');
+            style.id = styleId;
+            document.head.appendChild(style);
+            style.textContent = 'div[data-tid="chat-list-layout"]>button.fui-Button {display: none}';
+        } else {
+            style.remove();
+        }
+    }
+
     function showNotification() {
         log("Unread found.");
         GM_notification({
             title: "Teams Warning",
             text: "You have unread messages or activities in Teams for account of " +
                 document.getElementsByClassName("fui-Avatar")[0].ariaLabel.substring(19),
-            timeout: checkTimeout,
+            timeout: config.notification.checkTimeout,
             image: TEAMS_FAVICON,
             onclick: function () { }
         });
@@ -93,7 +129,7 @@
     function checkUnreadBlocks() {
         log("Checking...");
         if (document.getElementsByClassName("fui-CounterBadge").length > 0) {
-            if (SHOW_NOTIFICATION) {
+            if (config.notification.showNotification) {
                 showNotification();
             }
             changeFavicon(UNREAD_STATUS);
@@ -102,39 +138,35 @@
         }
     }
 
-    function selectSidebarItem(itemCode) {
-        switch (itemCode) {
-            case 'Digit1':
-                document.querySelector('button[aria-label="Chat"]').click();
-                break;
-            case 'Digit2':
-                document.querySelector('button[aria-label="Meet"]').click();
-                break;
-            case 'Digit3':
-                document.querySelector('button[aria-label="Communities"]').click();
-                break;
-            case 'Digit4':
-                document.querySelector('button[aria-label="Calendar"]').click();
-                break;
-            case 'Digit5':
-                document.querySelector('button[aria-label="Activity"]').click();
-                break;
-            default:
-                log("Unsupported sidebar item: " + itemCode);
+    function startMeetNowCall(isVideoCall) {
+        let callButton = null;
+        let meetNowDropDownButton = document.querySelectorAll('[data-tid="audio-drop-in-more-options-button"]')[0];
+        if (meetNowDropDownButton) {
+            meetNowDropDownButton.click();
+            callButton = document.querySelectorAll(
+                '[data-tid="audio-drop-in-dropdown-menu-item-' + (isVideoCall ? "video" : "audio") + '-button"]'
+            )[0];
+        } else {
+            callButton = document.querySelectorAll(
+                '[data-tid="chat-call-' + (isVideoCall ? "video" : "audio") + '-button"]'
+            )[0];
+        }
+        if (callButton) {
+            callButton.click();
+        } else {
+            GM_log("No Call Button Found.");
         }
     }
 
-    setInterval(checkUnreadBlocks, checkTimeout);
-    log("Teams Enhancer: started (checking interval: " + checkTimeout + "ms).");
+    setInterval(checkUnreadBlocks, config.notification.checkTimeout);
+    log("Teams Enhancer: started (checking interval: " + config.notification.checkTimeout + "ms).");
 
     document.addEventListener('keydown', function (event) {
         //log("Ctrl: " + event.ctrlKey + "; Alt: " + event.altKey + "; Shift: " + event.shiftKey +
         //    "; Key: " + event.key + "; Code: " + event.code);
         // Ctrl+Shift+<Num> -> Select Sidebar Item (1-5)
-        if (event.ctrlKey && (event.altKey || event.shiftKey) &&
-            (event.code == 'Digit1' || event.code == 'Digit2' || event.code == 'Digit3' ||
-                event.code == 'Digit4' || event.code == 'Digit5')) {
-            selectSidebarItem(event.code);
+        if (event.altKey && event.ctrlKey && event.shiftKey && (event.code == 'KeyA' || event.code == 'KeyV')) {
+            startMeetNowCall(event.code == 'KeyV');
             event.stopPropagation();
             event.preventDefault();
         }
@@ -144,9 +176,16 @@
 
     setTimeout(function () {
         GM_registerMenuCommand("Adjust Chat Text Font Size", promptAndAdjustChatTextSize, "t");
-        adjustChatTextSize(CHAT_TEXT_SIZE);
+        adjustChatTextSize(config.ui.chatTextSize);
         GM_registerMenuCommand("Adjust side Panel Size", promptAndAdjustSidePanelSize, "s");
-        adjustSidePanelSize(SIDE_PANEL_SIZE);
-    }, 1000);
-    log("Teams Enhancer: menu commands registered, UI adjustments applied.");
+        adjustSidePanelSize(config.ui.sidePanelSize);
+        GM_registerMenuCommand("Toggle Invite to Teams button", toggleInviteToTeamsButton, "i");
+        if (!config.ui.inviteToTeamsVisibility) {
+            toggleInviteToTeamsButton();
+        }
+
+        configHelper.addConfigMenu(CONFIG_NAMESPACE, JSON.stringify(DEFAULT_CONFIG));
+
+        log("Teams Enhancer: menu commands registered, UI adjustments applied.");
+    }, config.ui.startupDelay);
 })();
